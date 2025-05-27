@@ -28,7 +28,7 @@ func setHeight(x,z,h:int):
 
 func getHeight(x,z)->int:
 	var idx:int = x*flrWidth+z
-	return flrHeight[idx]
+	return flrHeight.get(idx)
 
 func setElement(x,z,val:int):
 	var idx:int = x*flrWidth+z
@@ -36,7 +36,7 @@ func setElement(x,z,val:int):
 
 func getElement(x,z)->int:
 	var idx:int = x*flrWidth+z
-	return flrElement[idx]
+	return flrElement.get(idx)
 
 func _on_mob_timer_timeout():
 	var mob = mob_scene.instantiate()

@@ -17,7 +17,7 @@ var actions:Array[bool] = [false,false];
 var hoverTimeRemaining = 1.0
 var groundFallTimeLeft = 0.3
 
-var motionState = "ground"
+var motionState = &"ground"
 var motionFuncs = {
 	&"ground": groundMotion,
 	&"fall": fallMotion,
