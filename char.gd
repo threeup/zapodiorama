@@ -99,7 +99,7 @@ func _physics_process(delta):
 		direction.y -= 1
 		setState(&"escalate")
 
-	actions[0] = Input.is_action_pressed("jump")
+	actions[0] = Input.is_action_pressed("swap")
 	actions[1] = Input.is_action_pressed("grab")
 
 	motionFuncs[motionState].call(delta);

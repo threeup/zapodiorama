@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c3di1otycr6ij"]
+[gd_scene load_steps=24 format=3 uid="uid://c3di1otycr6ij"]
 
 [ext_resource type="PackedScene" uid="uid://chr4cr5mwcjuf" path="res://char.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cxxf6ybdf5um4" path="res://main.gd" id="1_lquwl"]
@@ -8,8 +8,13 @@
 [ext_resource type="Script" uid="uid://dexis7mmhv41i" path="res://score_label.gd" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://bjc3b3hp8cya2" path="res://prefab/dirtmain.tscn" id="9_efxa6"]
 [ext_resource type="PackedScene" uid="uid://de8uui1hrhj3" path="res://prefab/dirtsnow.tscn" id="10_dg77c"]
+[ext_resource type="Script" uid="uid://bmt4n1nw0nwto" path="res://brick_maker.gd" id="11_efxa6"]
 [ext_resource type="Script" uid="uid://do1kalodgetmn" path="res://floor_maker.gd" id="11_vivmo"]
 [ext_resource type="PackedScene" uid="uid://cmnfaclhtua2c" path="res://prefab/dirtgrass.tscn" id="11_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://bkwppukorv4rx" path="res://prefab/brickred.tscn" id="12_w48qg"]
+[ext_resource type="PackedScene" uid="uid://dnc3rsaypdeap" path="res://prefab/brickblue.tscn" id="13_vivmo"]
+[ext_resource type="PackedScene" uid="uid://bvc5b66670260" path="res://prefab/brickgreen.tscn" id="14_2cqfq"]
+[ext_resource type="PackedScene" uid="uid://bove58wo1c0je" path="res://prefab/brickyellow.tscn" id="15_vivmo"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ycdy4"]
 panorama = ExtResource("3_dg77c")
@@ -50,6 +55,7 @@ default_font_size = 22
 [node name="Main" type="Node3D"]
 script = ExtResource("1_lquwl")
 mob_scene = ExtResource("2_7mycd")
+flrLength = 14
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_272bh")
@@ -88,7 +94,7 @@ curve = SubResource("Curve3D_272bh")
 transform = Transform3D(0.00937476, 0.00197841, 0.999952, 1.16415e-10, 0.999992, -0.00197851, -0.999952, 1.85481e-05, 0.00937476, 12.7608, 0.0381005, 14.2436)
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
 autostart = true
 
 [node name="UserInterface" type="Control" parent="."]
@@ -140,4 +146,12 @@ dirt_main = ExtResource("9_efxa6")
 dirt_snow = ExtResource("10_dg77c")
 dirt_grass = ExtResource("11_ycdy4")
 
+[node name="BrickMaker" type="Node3D" parent="."]
+script = ExtResource("11_efxa6")
+brick_red = ExtResource("12_w48qg")
+brick_blue = ExtResource("13_vivmo")
+brick_green = ExtResource("14_2cqfq")
+brick_yellow = ExtResource("15_vivmo")
+
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="MobTimer" to="BrickMaker" method="_on_mob_timer_timeout"]
