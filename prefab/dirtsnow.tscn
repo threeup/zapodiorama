@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://de8uui1hrhj3"]
+
+[ext_resource type="PackedScene" uid="uid://dbvd5on4uxfgf" path="res://mesh/dirt_with_snow.gltf" id="1_jl8xl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jl8xl"]
+
+[node name="p_dirtsnow" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="dirt_with_snow2" parent="." instance=ExtResource("1_jl8xl")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_jl8xl")

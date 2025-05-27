@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=3 uid="uid://chr4cr5mwcjuf"]
+
+[ext_resource type="Script" uid="uid://dvx5of3mtj51d" path="res://char.gd" id="1_hs5vj"]
+[ext_resource type="PackedScene" uid="uid://c4d7t2wcclpmx" path="res://mesh/apple.gltf" id="1_njpxk"]
+[ext_resource type="PackedScene" uid="uid://deqel6m5q3r88" path="res://mesh/pipe.gltf" id="3_ncbi3"]
+[ext_resource type="PackedScene" uid="uid://h2gwm008o3le" path="res://mesh/barrel.gltf" id="4_4phwq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hs5vj"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hs5vj"]
+height = 0.2
+radius = 0.754883
+
+[sub_resource type="Animation" id="Animation_3bvsw"]
+length = 0.001
+step = 0.033
+
+[sub_resource type="Animation" id="Animation_hs5vj"]
+resource_name = "float"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Characterhead:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.307719),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ncbi3"]
+_data = {
+&"RESET": SubResource("Animation_3bvsw"),
+&"float": SubResource("Animation_hs5vj")
+}
+
+[node name="Player" type="CharacterBody3D"]
+collision_mask = 6
+script = ExtResource("1_hs5vj")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Characterhead" parent="Pivot" instance=ExtResource("1_njpxk")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 1.2564, 0)
+
+[node name="leftarm" parent="Pivot" instance=ExtResource("3_ncbi3")]
+transform = Transform3D(0.2, 0, 0, 0, -0.0495132, -0.198786, 0, 0.447268, -0.0220059, 0.3, 1, 0.25)
+
+[node name="rightarm" parent="Pivot" instance=ExtResource("3_ncbi3")]
+transform = Transform3D(0.2, 0, 0, 0, -0.0495132, -0.198786, 0, 0.447268, -0.0220059, -0.3, 1, 0.25)
+
+[node name="Character" parent="Pivot" instance=ExtResource("4_4phwq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0.01)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hs5vj")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="Midsection" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CylinderShape3D_hs5vj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ncbi3")
+}
+autoplay = "float"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -1,0 +1,143 @@
+[gd_scene load_steps=19 format=3 uid="uid://c3di1otycr6ij"]
+
+[ext_resource type="PackedScene" uid="uid://chr4cr5mwcjuf" path="res://char.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cxxf6ybdf5um4" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="PackedScene" uid="uid://b8aj43lfa3ej3" path="res://mob.tscn" id="2_7mycd"]
+[ext_resource type="Texture2D" uid="uid://c45s20rdjhip3" path="res://prefab/autumn_field_puresky_4k.hdr" id="3_dg77c"]
+[ext_resource type="FontFile" uid="uid://b0b1guwry2kci" path="res://fonts/Montserrat-Medium.ttf" id="6_272bh"]
+[ext_resource type="Script" uid="uid://dexis7mmhv41i" path="res://score_label.gd" id="7_5vw27"]
+[ext_resource type="PackedScene" uid="uid://bjc3b3hp8cya2" path="res://prefab/dirtmain.tscn" id="9_efxa6"]
+[ext_resource type="PackedScene" uid="uid://de8uui1hrhj3" path="res://prefab/dirtsnow.tscn" id="10_dg77c"]
+[ext_resource type="Script" uid="uid://do1kalodgetmn" path="res://floor_maker.gd" id="11_vivmo"]
+[ext_resource type="PackedScene" uid="uid://cmnfaclhtua2c" path="res://prefab/dirtgrass.tscn" id="11_ycdy4"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ycdy4"]
+panorama = ExtResource("3_dg77c")
+
+[sub_resource type="Sky" id="Sky_7mycd"]
+sky_material = SubResource("PanoramaSkyMaterial_ycdy4")
+
+[sub_resource type="Environment" id="Environment_272bh"]
+background_mode = 2
+sky = SubResource("Sky_7mycd")
+ambient_light_color = Color(0.604586, 0.618614, 0.643262, 1)
+ambient_light_sky_contribution = 0.92
+ambient_light_energy = 5.02
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
+size = Vector3(60, 1, 60)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mycd"]
+albedo_color = Color(0.0868299, 0.0690769, 0.0562168, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ig7tw"]
+material = SubResource("StandardMaterial3D_7mycd")
+size = Vector3(60, 1, 60)
+
+[sub_resource type="Curve3D" id="Curve3D_272bh"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 12.7608, 0.0381005, 14.2436, 0, 0, 0, 0, 0, 0, -12.849, 0.0887721, 14.0035),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Theme" id="Theme_kek77"]
+default_font = ExtResource("6_272bh")
+default_font_size = 22
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_lquwl")
+mob_scene = ExtResource("2_7mycd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_272bh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.926529, -0.331257, 0.178363, 0, 0.474088, 0.880477, -0.376224, 0.815787, -0.439256, 0, 0, 0)
+light_energy = 0.3
+shadow_enabled = true
+
+[node name="ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground"]
+shape = SubResource("BoxShape3D_7dm0k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ground"]
+mesh = SubResource("BoxMesh_ig7tw")
+
+[node name="Player" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0166388, 0.001, 0)
+
+[node name="CameraPivot" type="Marker3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, -0.001, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+size = 19.0
+far = 100.0
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_272bh")
+
+[node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(0.00937476, 0.00197841, 0.999952, 1.16415e-10, 0.999992, -0.00197851, -0.999952, 1.85481e-05, 0.00937476, 12.7608, 0.0381005, 14.2436)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_kek77")
+
+[node name="ScoreLabel" type="Label" parent="UserInterface"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 16.0
+offset_right = 75.0
+offset_bottom = 39.0
+theme_override_colors/font_color = Color(1, 0.124572, 0.0864943, 1)
+text = "Score: 0"
+script = ExtResource("7_5vw27")
+
+[node name="Retry" type="ColorRect" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.254902, 0.254902, 0.254902, 0.435294)
+
+[node name="Label" type="Label" parent="UserInterface/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -111.0
+offset_top = -14.0
+offset_right = 111.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press Enter to Retry"
+
+[node name="FloorMaker" type="Node3D" parent="."]
+script = ExtResource("11_vivmo")
+dirt_main = ExtResource("9_efxa6")
+dirt_snow = ExtResource("10_dg77c")
+dirt_grass = ExtResource("11_ycdy4")
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

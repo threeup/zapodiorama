@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmnfaclhtua2c"]
+
+[ext_resource type="PackedScene" uid="uid://btcyx4k56be5n" path="res://mesh/dirt_with_grass.gltf" id="1_7vevx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7vevx"]
+
+[node name="p_dirtgrass" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="dirt_with_grass2" parent="." instance=ExtResource("1_7vevx")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_7vevx")
